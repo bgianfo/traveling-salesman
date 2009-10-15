@@ -3,7 +3,8 @@
 import random
 import sys
 import getopt
-from PIL import Image, ImageDraw, ImageFont
+#from PIL import Image, ImageDraw, ImageFont
+from urllib import urlretrieve 
 from math import sqrt
 
 def all_pairs(size,shuffle=random.shuffle):
@@ -117,6 +118,23 @@ def run_hillclimb(init_function,move_operator,objective_function,max_iterations)
 def usage():
     print "usage: python %s [-o <output image file>] [-v] [-m reversed_sections|swapped_cities] -n <max iterations> <city file>" % sys.argv[0]
 
+def getimg(coords, best):
+    url = "http://maps.google.com/maps/api/staticmap?path=color:orange|weight:4"
+
+    for i in best:
+        url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
+
+    url = url + "&size=1024x1024&sensor=false&key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSsTL4WIgxhMZ0ZK_kHjwHeQuOD4xQJpBVbSrqNn69S6DOTv203MQ5ufA"
+    urlretrieve(url,"path.png")
+
+    url = "http://maps.google.com/maps/api/staticmap?markers=color:blue|"
+    for i in best:
+            url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
+
+    url = url + "&size=1024x1024&sensor=false&key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSsTL4WIgxhMZ0ZK_kHjwHeQuOD4xQJpBVbSrqNn69S6DOTv203MQ5ufA"
+    urlretrieve(url,"points.png")
+
+    
 def main():
     try:
         options, args = getopt.getopt(sys.argv[1:], "ho:vm:n:")
@@ -160,7 +178,7 @@ def main():
     import logging
     format='%(asctime)s %(levelname)s %(message)s'
     if verbose:
-        logging.basicConfig(level=logging.INFO,format=format)
+        logging.basicConfig(level=logging.CRITICAL,format=format)
     else:
         logging.basicConfig(format=format)
     
@@ -174,10 +192,12 @@ def main():
     
     iterations,score,best=run_hillclimb(init_function,move_operator,objective_function,max_iterations)
     # output results
+    # print coords
+    getimg(coords,best)
     print iterations,score,best
     
-    if out_file_name:
-        write_tour_to_img(coords,best,'%s: %f'%(city_file,score),file(out_file_name,'w'))
+    #if out_file_name:
+    #    write_tour_to_img(coords,best,'%s: %f'%(city_file,score),file(out_file_name,'w'))
 
 if __name__ == "__main__":
     main()

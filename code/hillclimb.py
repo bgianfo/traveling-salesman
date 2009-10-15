@@ -51,5 +51,6 @@ def hillclimb_and_restart(init_function,move_operator,objective_function,max_eva
         if score > best_score or best is None:
             best_score=score
             best=found
+            logging.critical("New best: "+ str(best_score)+ " remaining: %d/%d",remaining_evaluations,max_evaluations)
         
     return (num_evaluations,best_score,best)
