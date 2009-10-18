@@ -110,9 +110,9 @@ def init_random_tour(tour_length):
    random.shuffle(tour)
    return tour
 
-def run_hillclimb(init_function,move_operator,objective_function,max_iterations):
+def run_hillclimb(init_function,move_operator,objective_function,max_iterations,coords):
     from hillclimb import hillclimb_and_restart
-    iterations,score,best=hillclimb_and_restart(init_function,move_operator,objective_function,max_iterations)
+    iterations,score,best=hillclimb_and_restart(init_function,move_operator,objective_function,max_iterations,coords)
     return iterations,score,best
 
 def usage():
@@ -190,7 +190,7 @@ def main():
     
     logging.info('using move_operator: %s'%move_operator)
     
-    iterations,score,best=run_hillclimb(init_function,move_operator,objective_function,max_iterations)
+    iterations,score,best=run_hillclimb(init_function,move_operator,objective_function,max_iterations,coords)
     # output results
     # print coords
     getimg(coords,best)
