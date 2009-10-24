@@ -3,8 +3,13 @@
 import random
 import sys
 import getopt
-from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
+import math
+
+nauticalMilePerLat = 60.00721
+nauticalMilePerLongitude = 60.10793
+rad = math.pi / 180.0
+milesPerNauticalMile = 1.15078
 
 def rand_seq(size):
     '''generates values in random order
@@ -78,57 +83,46 @@ def tour_length(matrix,tour):
         total+=matrix[city_i,city_j]
     return total
 
-def write_tour_to_img(coords,tour,title,img_file):
-    padding=20
-    # shift all coords in a bit
-    coords=[(x+padding,y+padding) for (x,y) in coords]
-    maxx,maxy=0,0
-    for x,y in coords:
-        maxx=max(x,maxx)
-        maxy=max(y,maxy)
-    maxx+=padding
-    maxy+=padding
-    img=Image.new("RGB",(int(maxx),int(maxy)),color=(255,255,255))
-    
-    font=ImageFont.load_default()
-    d=ImageDraw.Draw(img);
-    num_cities=len(tour)
-    for i in range(num_cities):
-        j=(i+1)%num_cities
-        city_i=tour[i]
-        city_j=tour[j]
-        x1,y1=coords[city_i]
-        x2,y2=coords[city_j]
-        d.line((int(x1),int(y1),int(x2),int(y2)),fill=(0,0,0))
-        d.text((int(x1)+7,int(y1)-5),str(i),font=font,fill=(32,32,32))
-    
-    
-    for x,y in coords:
-        x,y=int(x),int(y)
-        d.ellipse((x-5,y-5,x+5,y+5),outline=(0,0,0),fill=(196,196,196))
-    
-    d.text((1,1),title,font=font,fill=(0,0,0))
-    
-    del d
-    img.save(img_file, "PNG")
+def calcDistance(lat1, lon1, lat2, lon2):
+  """
+  Caclulate distance between two lat lons in NM
+  """
+  yDistance = (lat2 - lat1) * nauticalMilePerLat
+  xDistance = (math.cos(lat1 * rad) + math.cos(lat2 * rad)) * (lon2 - lon1) * (nauticalMilePerLongitude / 2) 
+  distance = math.sqrt( yDistance**2 + xDistance**2 )
+  return distance * milesPerNauticalMile
+
+def calculatePathLen(path, arr):
+  first = True 
+  lastpoint = ()
+  length = 0
+  for point in path:
+    if first:
+      lastpoint = point
+      first = False
+    else:
+      length += calcDistance(arr[lastpoint][0],arr[lastpoint][1],arr[point][0],arr[point][1])
+      lastpoint = point
+
+  return length
 
 def init_random_tour(tour_length):
    tour=range(tour_length)
    random.shuffle(tour)
    return tour
 
-def run_hillclimb(init_function,move_operator,objective_function,max_iterations):
+def run_hillclimb(init_function,move_operator,objective_function,max_iterations,coords):
     from hillclimb import hillclimb_and_restart
-    iterations,score,best=hillclimb_and_restart(init_function,move_operator,objective_function,max_iterations)
+    iterations,score,best=hillclimb_and_restart(init_function,move_operator,objective_function,max_iterations,coords)
     return iterations,score,best
 
-def run_anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha):
+def run_anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha,coords):
     if start_temp is None or alpha is None:
         usage();
         print "missing --cooling start_temp:alpha for annealing"
         sys.exit(1)
     from sa import anneal
-    iterations,score,best=anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha)
+    iterations,score,best=anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha,coords)
     return iterations,score,best
 
 def usage():
@@ -145,6 +139,7 @@ def main():
     verbose=None
     move_operator=reversed_sections
     run_algorithm=run_hillclimb
+    coords = []
     
     start_temp,alpha=None,None
     
@@ -168,8 +163,8 @@ def main():
                 run_algorithm=run_hillclimb
             elif arg == 'anneal':
                 # do this to pass start_temp and alpha to run_anneal
-                def run_anneal_with_temp(init_function,move_operator,objective_function,max_iterations):
-                    return run_anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha)
+                def run_anneal_with_temp(init_function,move_operator,objective_function,max_iterations,coords):
+                    return run_anneal(init_function,move_operator,objective_function,max_iterations,start_temp,alpha,coords)
                 run_algorithm=run_anneal_with_temp
         elif option == '--cooling':
             start_temp,alpha=arg.split(':')
@@ -208,12 +203,10 @@ def main():
     
     logging.info('using move_operator: %s'%move_operator)
     
-    iterations,score,best=run_algorithm(init_function,move_operator,objective_function,max_iterations)
+    iterations,score,best=run_algorithm(init_function,move_operator,objective_function,max_iterations,coords)
     # output results
     print iterations,score,best
+    print str(calculatePathLen(best,coords)) + " mi"
     
-    if out_file_name:
-        write_tour_to_img(coords,best,'%s: %f'%(city_file,score),file(out_file_name,'w'))
-
 if __name__ == "__main__":
     main()
