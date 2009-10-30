@@ -15,5 +15,7 @@ paper-clean:
 	rm -f paper.pdf
 	rm -f paper.toc
 
+spell:
+	aspell check -t paper.tex
 
 clean: paper-clean
