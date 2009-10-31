@@ -12,6 +12,10 @@
 \usepackage{graphicx}
 \usepackage{multicol}
 \usepackage{mdwlist}
+\usepackage{amssymb,amsmath}
+\usepackage{cite}
+\usepackage[bookmarks=false,colorlinks=true,linkcolor={blue},pdfstartview={XYZ null null 1.22}]{hyperref} 
+\usepackage{url}
 
 \begin{document}
 \maketitle
@@ -103,13 +107,20 @@ Finally, Section gives the conclusions.
 
 The TSP was solved using the Python 2.6 programming language.
 
-I leveraged software written by John Montgomery 
+I leveraged software written by John Montgomery \cite{cite_key2}
 
 The results were then visualized using Google maps mapping API. 
 
 Two methods were 
 
 \section{Solution}
+
+\begin{align}
+  yDis = ( lat2 - lat1 ) * Nautical Miles Per Latitude\\
+  xDis = ( \cos( lat1 - \frac{\pi}{180} ) + \cos( lat2 - \frac{\pi}{180} ) ) * ( lon2 - lon1 ) * \frac{Nautical Miles Per Longitude}{2}\\
+  tDistance = \sqrt{ yDis^{2} + xDis^{2} } * Miles per Nautical Miles\\
+\end{align}
+
 
 \begin{figure}
 \begin{center}
@@ -126,5 +137,8 @@ In this section we describe the results.
 We worked hard, and achieved very little.
 
 \section{Analysis}
-
+\begin{thebibliography}{99}
+\bibitem{cite_key1} Montgomery, John {\it Tackling The Travelling Salesman Problem}{\href{http://www.psychicorigami.com/category/tsp/}{ http://www.psychicorigami.com/category/tsp/} }, {\bf 2007}
+\bibitem{cite_key2} Mead, C. A.; Truhlar, D. G. {\it J. Chem. Phys.} {\bf 1983}, {\it 78}, 6344.
+\end{thebibliography}
 \end{document}
