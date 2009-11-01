@@ -64,8 +64,8 @@ def tour_length(matrix,tour):
     '''total up the total length of the tour based on the distance matrix'''
     total=0
     num_cities=len(tour)
-    for i in range(num_cities):
-        j=(i+1)%num_cities
+    for i in range(num_cities-1):
+        j=i+1
         city_i=tour[i]
         city_j=tour[j]
         total+=matrix[city_i,city_j]

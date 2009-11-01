@@ -14,16 +14,16 @@
 \usepackage{mdwlist}
 \usepackage{amssymb,amsmath}
 \usepackage{cite}
-\usepackage[bookmarks=false,colorlinks=true,linkcolor={blue},pdfstartview={XYZ null null 1.22}]{hyperref} 
+\usepackage[bookmarks=false,colorlinks=true,linkcolor={blue},pdfstartview={XYZ null null 1.22}]{hyperref}
 \usepackage{url}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-A Traveling Salesman Problem is the task of finding 
-the shortest round trip path a traveling salesperson can take 
-to visit each vertex of a given graph.  They are usually 
+A Traveling Salesman Problem is the task of finding
+the shortest round trip path a traveling salesperson can take
+to visit each vertex of a given graph.  They are usually
 implemented using a genetic algorithm. Our salesperson
 happens to be traveling to the capitals of every country in Africa that is a recognized member of the United Nations.
 \end{abstract}
@@ -85,7 +85,7 @@ happens to be traveling to the capitals of every country in Africa that is a rec
 \item Seychelles - Victoria
 \item Sierra Leone - Freetown
 \item Somalia - Mogadishu
-\item South Africa - Pretoria 
+\item South Africa - Pretoria
 \item Sudan - Khartoum
 \item Swaziland - Mbabane
 \item Tanzania - Dar es Salaam
@@ -109,9 +109,9 @@ The TSP was solved using the Python 2.6 programming language.
 
 I leveraged software written by John Montgomery \cite{cite_key2}
 
-The results were then visualized using Google maps mapping API. 
+The results were then visualized using Google maps mapping API.
 
-Two methods were 
+Two methods were used a \bf{hillclimb} and
 
 \section{Solution}
 
@@ -131,12 +131,72 @@ Two methods were
 \end{center}
 \end{figure}
 
+Final Order:
+
+\begin{multicols}{3}
+\tiny\begin{enumerate*}
+\item Congo, Republic of the - Brazzaville
+\item Congo, Democratic Republic of the - Kinshasa
+\item Angola - Luanda
+\item Namibia - Windhoek
+\item Botswana - Gaborone
+\item South Africa - Pretoria
+\item Lesotho - Maseru
+\item Swaziland - Mbabane
+\item Mozambique - Maputo
+\item Zimbabwe - Harare
+\item Zambia - Lusaka
+\item Malawi - Lilongwe
+\item Burundi - Bujumbura
+\item Rwanda - Kigali
+\item Uganda - Kampala
+\item Kenya - Nairobi
+\item Tanzania - Dar es Salaam
+\item Comoros - Moroni
+\item Madagascar - Antananarivo
+\item Mauritius - Port Louis
+\item Seychelles - Victoria
+\item Somalia - Mogadishu
+\item Ethiopia - Addis Ababa
+\item Djibouti - Djibouti
+\item Eritrea - Asmara
+\item Sudan - Khartoum
+\item Egypt - Cairo
+\item Libya - Tripoli
+\item Tunisia - Tunis
+\item Algeria - Algiers
+\item Morocco - Rabat
+\item Mauritania - Nouakchott
+\item Cape Verde - Praia
+\item Senegal - Dakar
+\item The Gambia - Banjul
+\item Guinea-Bissau - Bissau
+\item Guinea - Conakry
+\item Sierra Leone - Freetown
+\item Liberia - Monrovia
+\item Cote d'Ivoire - Yamoussoukro
+\item Mali - Bamako
+\item Burkina Faso - Ouagadougou
+\item Niger - Niamey
+\item Ghana - Accra
+\item Togo - Lome
+\item Benin - Porto-Novo
+\item Nigeria - Abuja
+\item Chad - N'Djamena
+\item Central African Republic - Bangui
+\item Cameroon - Yaounde
+\item Equatorial Guinea - Malabo
+\item Gabon - Libreville
+\end{enumerate*}
+\end{multicols}
+
 In this section we describe the results.
 
 \section{Runtime}
 We worked hard, and achieved very little.
 
 \section{Analysis}
+
 \begin{thebibliography}{99}
 \bibitem{cite_key1} Montgomery, John {\it Tackling The Travelling Salesman Problem}{\href{http://www.psychicorigami.com/category/tsp/}{ http://www.psychicorigami.com/category/tsp/} }, {\bf 2007}
 \bibitem{cite_key2} Mead, C. A.; Truhlar, D. G. {\it J. Chem. Phys.} {\bf 1983}, {\it 78}, 6344.

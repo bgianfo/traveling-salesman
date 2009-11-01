@@ -1,6 +1,6 @@
 import logging
 import os
-from urllib import urlretrieve 
+from urllib import urlretrieve
 
 def hillclimb(init_function,move_operator,objective_function,max_evaluations):
     '''
@@ -54,8 +54,25 @@ def hillclimb_and_restart(init_function,move_operator,objective_function,max_eva
             best_score=score
             best=found
             logging.critical("New best: "+ str(best_score)+ " remaining: %d/%d",remaining_evaluations,max_evaluations)
-            #getimg(coords,best)
-            #os.popen("open path.png")
+            getimg(coords,best)
+            os.popen("open path.png")
 
-        
     return (num_evaluations,best_score,best)
+
+def getimg(coords, best):
+    url = "http://maps.google.com/maps/api/staticmap?path=color:orange|weight:4"
+
+    for i in best:
+        url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
+
+    url = url + "&size=1024x1024&sensor=false&key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSsTL4WIgxhMZ0ZK_kHjwHeQuOD4xQJpBVbSrqNn69S6DOTv203MQ5ufA"
+    urlretrieve(url,"path.png")
+
+    url = "http://maps.google.com/maps/api/staticmap?markers=color:blue|"
+    for i in best:
+            url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
+
+    url = url + "&size=1024x1024&sensor=false&key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSsTL4WIgxhMZ0ZK_kHjwHeQuOD4xQJpBVbSrqNn69S6DOTv203MQ5ufA"
+    urlretrieve(url,"points.png")
+
+

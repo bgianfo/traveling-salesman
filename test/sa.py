@@ -25,7 +25,7 @@ class ObjectiveFunction:
             self.best_score=score
             self.best=solution
             logging.info('new best score: %f',self.best_score)
-            if score > (-341):
+            if score > (-325):
               getimg(self.coords,self.best)
               os.popen("eog path.png")
 

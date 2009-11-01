@@ -84,15 +84,23 @@ def order(best):
       print cities[i]
 
 
-def tour_length(matrix,tour):
+def tour_length(matrix, tour, tsp):
     '''total up the total length of the tour based on the distance matrix'''
     total=0
     num_cities=len(tour)
-    for i in range(num_cities):
-        j=(i+1)%num_cities
-        city_i=tour[i]
-        city_j=tour[j]
-        total+=matrix[city_i,city_j]
+    if tsp:
+      for i in range(num_cities):
+          j=(i+1)%num_cities
+          city_i=tour[i]
+          city_j=tour[j]
+          total+=matrix[city_i,city_j]
+    else:
+      for i in range(num_cities-1):
+          j=i+1
+          city_i=tour[i]
+          city_j=tour[j]
+          total+=matrix[city_i,city_j]
+
     return total
 
 def calcDistance(lat1, lon1, lat2, lon2):
@@ -138,11 +146,11 @@ def run_anneal(init_function,move_operator,objective_function,max_iterations,sta
     return iterations,score,best
 
 def usage():
-    print "usage: python %s [-o <output image file>] [-v] [-m reversed_sections|swapped_cities] -n <max iterations> [-a hillclimb|anneal] [--cooling start_temp:alpha] <city file>" % sys.argv[0]
+    print "usage: python %s [-o <output image file>] [-v] [-m reversed_sections|swapped_cities]  -n <max iterations> [-a hillclimb|anneal] -t [--cooling start_temp:alpha] <city file>" % sys.argv[0]
 
 def main():
     try:
-        options, args = getopt.getopt(sys.argv[1:], "ho:vm:n:a:", ["cooling="])
+      options, args = getopt.getopt(sys.argv[1:], "ho:vm:n:a:t:", ["cooling="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -152,6 +160,8 @@ def main():
     move_operator=reversed_sections
     run_algorithm=run_hillclimb
     coords = []
+
+    tsp = False
     
     start_temp,alpha=None,None
     
@@ -170,6 +180,8 @@ def main():
                 move_operator=swapped_cities
             elif arg == 'reversed_sections':
                 move_operator=reversed_sections
+        elif option == '-t':
+            tsp = True
         elif option == '-a':
             if arg == 'hillclimb':
                 run_algorithm=run_hillclimb
@@ -211,13 +223,16 @@ def main():
     coords=read_coords(file(city_file))
     init_function=lambda: init_random_tour(len(coords))
     matrix=cartesian_matrix(coords)
-    objective_function=lambda tour: -tour_length(matrix,tour)
+    if tsp:
+      objective_function=lambda tour: -tour_length(matrix,tour,True)
+    else:
+      objective_function=lambda tour: -tour_length(matrix,tour,False)
     
     logging.info('using move_operator: %s'%move_operator)
     
     iterations,score,best=run_algorithm(init_function,move_operator,objective_function,max_iterations,coords)
     # output results
-    print order(best)
+    #print order(best)
     print iterations,score,best
     print str(calculatePathLen(best,coords)) + " mi"
     

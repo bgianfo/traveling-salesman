@@ -4,7 +4,7 @@ A Traveling Salesman Problem is the task of finding the shortest
 roundtrip path a traveling salesperson can take to visit each vertex 
 of a given graph. They are usually implemented using a genetic algorithm.  
    
-S = {capitals of every country in Africa that is a recognized member of the United Nations} 
+S = { Capitals of every country in Africa that is a recognized member of the United Nations} 
 
 * Find the shortest roundtrip path that visits all the vertices in S, traveling along geodesics (that is, 
          straight lines over the surface of the earth).  [Important:  Do not add additional cities to your set.] 
