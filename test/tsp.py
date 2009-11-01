@@ -56,9 +56,7 @@ def cartesian_matrix(coords):
     matrix={}
     for i,(x1,y1) in enumerate(coords):
         for j,(x2,y2) in enumerate(coords):
-            dx,dy=x1-x2,y1-y2
-            dist=sqrt(dx*dx + dy*dy)
-            matrix[i,j]=dist
+            matrix[i,j]=calcDistance(x1,y1,x2,y2)
     return matrix
 
 def read_coords(coord_file):
@@ -88,18 +86,17 @@ def tour_length(matrix, tour, tsp):
     '''total up the total length of the tour based on the distance matrix'''
     total=0
     num_cities=len(tour)
-    if tsp:
-      for i in range(num_cities):
-          j=(i+1)%num_cities
-          city_i=tour[i]
-          city_j=tour[j]
-          total+=matrix[city_i,city_j]
-    else:
-      for i in range(num_cities-1):
-          j=i+1
-          city_i=tour[i]
-          city_j=tour[j]
-          total+=matrix[city_i,city_j]
+    max = 0
+    for i in range(num_cities):
+      j = (i+1)%num_cities
+      city_i=tour[i]
+      city_j=tour[j]
+      total+=matrix[city_i,city_j]
+      if matrix[city_i,city_j] > max:
+          max = matrix[city_i,city_j]
+
+    if not tsp:
+       total = total - max
 
     return total
 
@@ -112,17 +109,24 @@ def calcDistance(lat1, lon1, lat2, lon2):
   distance = math.sqrt( yDistance**2 + xDistance**2 )
   return distance * milesPerNauticalMile
 
-def calculatePathLen(path, arr):
+def calculatePathLen(path, arr, tsp):
   first = True
   lastpoint = ()
   length = 0
+  max = 0
   for point in path:
     if first:
       lastpoint = point
       first = False
     else:
-      length += calcDistance(arr[lastpoint][0],arr[lastpoint][1],arr[point][0],arr[point][1])
+      curr = calcDistance(arr[lastpoint][0],arr[lastpoint][1],arr[point][0],arr[point][1])
+      length += curr
       lastpoint = point
+      if curr > max:
+        max = curr
+
+  if not tsp:
+    length = length - max
 
   return length
 
@@ -150,7 +154,7 @@ def usage():
 
 def main():
     try:
-      options, args = getopt.getopt(sys.argv[1:], "ho:vm:n:a:t:", ["cooling="])
+      options, args = getopt.getopt(sys.argv[1:], "ho:vm:n:a:t", ["cooling="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -234,7 +238,7 @@ def main():
     # output results
     #print order(best)
     print iterations,score,best
-    print str(calculatePathLen(best,coords)) + " mi"
+    print str(calculatePathLen(best,coords,tsp)) + " mi"
     
 if __name__ == "__main__":
     main()

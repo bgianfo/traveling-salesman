@@ -3,7 +3,7 @@ CONVERT_DVI=dvipdf
 default: paper open
 
 open:
-	evince paper.pdf
+	open paper.pdf
 
 paper: paper.tex
 	$(LATEX) paper.tex

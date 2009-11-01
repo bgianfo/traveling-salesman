@@ -27,7 +27,7 @@
 (defn tour-length [tour]
   (reduce + (map #(distance coords %) (map set (partition 2 1 tour)))))
 
-(def optimal-distance (tour-length optimal-tour))
+(def optimal-distance 100)
 
 (def nodes (set (keys coords)))
 (def edges (set (for [a nodes b nodes :when (not= a b)] #{a b})))
