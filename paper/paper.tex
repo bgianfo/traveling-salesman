@@ -17,14 +17,14 @@
 \usepackage[bookmarks=false,colorlinks=true,linkcolor={blue},pdfstartview={XYZ null null 1.22}]{hyperref}
 \usepackage{url}
 \usepackage[T1]{fontenc}
-\usepackage{gfsartemisia-euler}
+%\usepackage{gfsartemisia-euler}
 
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-A Traveling Salesman Problem is the task of finding
+  A Traveling Salesman Problem is the task of finding
 the shortest round trip path a traveling salesperson can take
 to visit each vertex of a given graph.  They are usually
 implemented using a genetic algorithm. Our salesperson
@@ -33,13 +33,13 @@ happens to be traveling to the capitals of every country in Africa that is a rec
 
 \section{The Problem}
 
-\begin{figure}
-\begin{center}
-\setlength\fboxsep{1.00pt}
-\setlength\fboxrule{1.00pt}
-\fbox{\includegraphics[scale=0.80]{points.png}}
-\caption{Capitals of African Nations}
-\end{center}
+\begin{figure}[h!]
+  \begin{center}
+    \setlength\fboxsep{1.00pt}
+    \setlength\fboxrule{1.00pt}
+    \fbox{\includegraphics[scale=0.60]{points.png}}
+    \caption{Capitals of African Nations}
+  \end{center}
 \end{figure}
 
 
@@ -101,41 +101,41 @@ happens to be traveling to the capitals of every country in Africa that is a rec
 \end{multicols}
 
 \section{Overview}
-The remainder of this article is organized as follows.
-Section~ gives account of previous work.
-Our new and exciting results are described in Section~.
-Finally, Section gives the conclusions.
+
+  The traveling salesman problem (TSP) is a thoroughly researched problem in theoreticaly computer-science. 
+TSP is classified as NP-Hard eg. as hard or harder to solve than a problem solvable in nondeterministic polynomial time.
+This means the worst case performance for a TSP algorithm will likely increase exponetially with the numbers of cities to traverse.
+
+The big-O complexity of a brute force TSP algorithms (check all vertices against all other vertices) is $O(n!)$.
 
 \section{Programs}
 
-The TSP was solved using the Python 2.6 programming language.
+\begin{enumerate}
+\item The Python 2.6 \cite{python} programming language and interpreter.
+\item Wikipedia's list of city latitude/longitudes \cite{wiki}.
+\item Software originally written by John Montgomery \cite{tsp} in 2007.General exercise in different types of TSP solving algorithms.
+\item The results were then visualized using Google maps static mapping API \cite{google}.
 
-I leveraged software written by John Montgomery \cite{cite_key2}
+\end{enumerate}
 
-The results were then visualized using Google maps mapping API.
-
-Two methods were used a \bf{hillclimb} and
 
 \section{Solution}
 
-\begin{align}
-  yDis = ( lat2 - lat1 ) * Nautical Miles Per Latitude\\
-  xDis = ( \cos( lat1 - \frac{\pi}{180} ) + \cos( lat2 - \frac{\pi}{180} ) ) * ( lon2 - lon1 ) * \frac{Nautical Miles Per Longitude}{2}\\
-  tDistance = \sqrt{ yDis^{2} + xDis^{2} } * Miles per Nautical Miles\\
-\end{align}
+%$yDis = ( lat2 - lat1 ) * \text{Nautical Miles Per Latitude}$\newline
+%$xDis = ( \cos( lat1 - \frac{\pi}{180} ) + \cos( lat2 - \frac{\pi}{180} ) ) * ( lon2 - lon1 ) * \frac{\text{Nautical Miles Per Longitude}}{2}$\newline
+%$tDistance = \sqrt{ yDis^{2} + xDis^{2} } * \text{Miles per Nautical Miles}$\newline
 
 
-\begin{figure}
-\begin{center}
-\setlength\fboxsep{1.00pt}
-\setlength\fboxrule{1.00pt}
-\fbox{\includegraphics[scale=0.65]{path.png}}
-\caption{Final Path Through Africa}
-\end{center}
+\begin{figure}[!h]
+  \begin{center}
+    \setlength\fboxsep{1.00pt}
+    \setlength\fboxrule{1.00pt}
+    \fbox{\includegraphics[scale=0.50]{path.png}}
+    \caption{Final Path Through Africa}
+  \end{center}
 \end{figure}
 
 Final Order:
-
 \begin{multicols}{3}
 \tiny\begin{enumerate*}
 \item Congo, Republic of the - Brazzaville
@@ -193,15 +193,39 @@ Final Order:
 \end{enumerate*}
 \end{multicols}
 
-In this section we describe the results.
+Total Round Trip $\approx 22253.2035387$ miles
 
 \section{Runtime}
-We worked hard, and achieved very little.
+
+The two algorithms, simulated annealing and brute force random permutations where both run in numerious instances over the life of the project. 
+In combined total they were run upwards of fity times a peice.
+
+The version of the algorithm wich used simulated annealing on average found the optimal solution in 6 seconds. 
+While the bruteforce method often took upwards of 
 
 \section{Analysis}
 
+I believe the final optimal path's are within a reasonable uncertenty of the actual path.
+Given the big-O of the brute force algorithm $O(n!)$ or $O(80658175170943878571660636856403766975289505440883277824000000000000)$ a runtime complexity of this magnitude is obviously out of my leauge for finding exact values.
+At a maxiumum I was able to attempt 100,000,000 permutations of the path.
+
+Two area's of possible improvement I can pinpoint are:
+\begin{enumerate}
+\item The language itself. I chose the python programming language for my TSP implementation.
+The language is interpreted and it's runtime speed can at times be 20\% slower than an equivilant C program.
+\item The random.shuffle implementation. Given how python's random.shuffle API is implemented it talkes a set
+of values and shuffles them based on a random number between 0,1 generated by the operating system. However given the size of the set
+, 52 individual points, the likely hood that random.shuffle will generated all permutations without excessive doubles is increadibly unlikely.
+This is the cause of a lot of literally useless computation time, however because of the size of the data set, caching data sets is not plausible let alone if even possible.
+\end{enumerate}
+
+Re-writing the algorithm in C would be a great performance benifit. Also having a proper resources to cache routes or a effective random route generater I beleive a more accurate optimal route might be found.
+
 \begin{thebibliography}{99}
-\bibitem{cite_key1} Montgomery, John {\it Tackling The Travelling Salesman Problem}{\href{http://www.psychicorigami.com/category/tsp/}{ http://www.psychicorigami.com/category/tsp/} }, {\bf 2007}
-\bibitem{cite_key2} Mead, C. A.; Truhlar, D. G. {\it J. Chem. Phys.} {\bf 1983}, {\it 78}, 6344.
+\bibitem{python} {\href{ http://python.org }{ http://python.org }}
+\bibitem{wiki} {\href{ http://en.wikipedia.org/wiki/Latitude_and_longitude_of_cities }{ http://en.wikipedia.org/wiki/Latitude\_and\_longitude\_of\_cities }}
+\bibitem{tsp} Montgomery, John {\it Tackling The Travelling Salesman Problem }{\href{ http://www.psychicorigami.com/category/tsp/ }{ http://www.psychicorigami.com/category/tsp/ } }, {\bf 2007}
+\bibitem{google} {\href{ http://code.google.com/apis/maps/documentation/staticmaps/  }{ http://code.google.com/apis/maps/documentation/staticmaps/ }}
+
 \end{thebibliography}
 \end{document}

@@ -7,6 +7,7 @@ open:
 
 paper: paper.tex
 	$(LATEX) paper.tex
+	$(LATEX) paper.tex
 	rm -rf paper.log
 	rm -rf paper.aux
 
