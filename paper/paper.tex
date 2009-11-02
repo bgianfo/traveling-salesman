@@ -26,15 +26,32 @@ Rochester Institute of Technology\\
 \begin{abstract}
   A Traveling Salesman Problem is the task of finding
 the shortest round trip path a traveling salesperson can take
-to visit each vertex of a given graph.  They are usually
-implemented using a genetic algorithm. Our salesperson
+to visit each vertex of a given graph. Our salesperson
 happens to be traveling to the capitals of every country in Africa that is a recognized member of the United Nations.
 \end{abstract}
 
+\newpage      
 \section{The Problem}
+\bf{G-3(b)****. }\normalfont A Traveling Salesman Problem is the task of finding 
+the shortest roundtrip path a traveling salesperson can take 
+to visit each vertex of a given graph.  They are usually 
+implemented using a genetic algorithm.  
 
-  Attempt to find the shortest i.e. cheapest complete path around all African Nations so our sales person can travel the most efficient route possible.
-
+\begin{itemize}
+\item You may choose only one of the following sets of vertices. \newline
+\small
+\bf(a) \normalfont \small S = \{capitals of the 50 states in the US \} \newline
+\bf(b) \normalfont \small S = \{capitals of every country in Africa that is a recognized member of the United Nations\} \newline
+\bf(c) \normalfont \small S = \{capitals of every country in Asia that is a recognized member of the United Nations\} \newline
+\bf(d) \normalfont \small S = \{capitals of every country in Europe that is a recognized member of the United Nations\}
+\normalfont
+\item Find the shortest roundtrip path that visits all the vertices in S, traveling along geodesics (that is, 
+straight lines over the surface of the earth).  [Important:  Do not add additional cities to your set.] 
+\item Include the optimal distance (rounded to the nearest kilometer) and a map of the optimal route.   
+\item Provide a list of countries (in alphabetical order) and capitals in your set. 
+\item Find the shortest path if we drop the condition that the path must be a roundtrip. 
+\end{itemize}
+        
 \begin{figure}[h!]
   \begin{center}
     \setlength\fboxsep{1.00pt}
@@ -268,8 +285,9 @@ Total Length Of Non-Round-trip Route $\approx 34,096 km$
 The two algorithms, simulated annealing and brute force random permutations where both run in numerous instances over the life of the project. 
 In combined total they were run upwards of fifty times a piece.
 
-The version of the algorithm which used simulated annealing on average found the optimal solution in 6 seconds. 
-While the brute force method often took upwards of  
+The version of the algorithm which used simulated annealing on average found the optimal solution in approximately 6 seconds. 
+While the brute force algorithm delivered the same result or close to it in upwards of 2 to 10 minutes. Given the internal implementation of the algorithm, it's performance is directly linked with the first random number used to seed the initial route.
+Multiple runs of the brute force algorithm another one another often result in drastically different run times to find the same solution. This was beyond my control on the implementation side of things.
 
 \section{Analysis}
 
