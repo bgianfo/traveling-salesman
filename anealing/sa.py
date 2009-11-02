@@ -27,7 +27,7 @@ class ObjectiveFunction:
             logging.info('new best score: %f',self.best_score)
             if score > (-341):
               getimg(self.coords,self.best)
-              os.popen("eog path.png")
+              os.popen("open path.png")
 
         return score
 
@@ -83,7 +83,7 @@ def anneal(init_function,move_operator,objective_function,max_evaluations,start_
     return (num_evaluations,best_score,best)
 
 def getimg(coords, best):
-    url = "http://maps.google.com/maps/api/staticmap?path=color:orange|weight:4"
+    url = "http://maps.google.com/maps/api/staticmap?path=color:0x000000ff|weight:4"
 
     for i in best:
         url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
@@ -96,6 +96,6 @@ def getimg(coords, best):
             url = url + "|" + str(coords[i][0]) + "," + str(coords[i][1])
 
     url = url + "&size=1024x1024&sensor=false&key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSsTL4WIgxhMZ0ZK_kHjwHeQuOD4xQJpBVbSrqNn69S6DOTv203MQ5ufA"
-    urlretrieve(url,"points.png")
+    #urlretrieve(url,"points.png")
 
 

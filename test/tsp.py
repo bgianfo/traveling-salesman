@@ -71,7 +71,7 @@ def read_coords(coord_file):
     return coords
 
 def order(best):
-    file = open('cities','r')
+    file = open('../cities','r')
     cities = []
     for city in file:
       cities.append(city)
@@ -237,6 +237,7 @@ def main():
     iterations,score,best=run_algorithm(init_function,move_operator,objective_function,max_iterations,coords)
     # output results
     #print order(best)
+    print order(best)
     print iterations,score,best
     print str(calculatePathLen(best,coords,tsp)) + " mi"
     
